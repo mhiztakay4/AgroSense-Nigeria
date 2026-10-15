@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Laboratory Results | AgroSense Nigeria</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root {
+  --green: #123d2b;
+  --green2: #1e6545;
+  --gold: #d9ad50;
+  --bg: #f4f7f3;
+  --white: #ffffff;
+  --text: #1c3025;
+  --muted: #69796e;
+  --border: #dce5dc;
+  --red: #a52a2a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+header {
+  background: var(--green);
+  color: white;
+  padding: 20px;
+  border-bottom: 4px solid var(--gold);
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.brand span {
+  color: var(--gold);
+}
+
+header p {
+  font-size: 12px;
+  color: #dce9df;
+  margin: 6px 0 0;
+}
+
+button, .button {
+  border: 0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.logout {
+  background: white;
+  color: var(--green);
+}
+
+main {
+  max-width: 1100px;
+  padding: 24px 16px 50px;
+  margin: auto;
+}
+
+h1 {
+  margin-bottom: 8px;
+  font-size: 27px;
+}
+
+.subtitle {
+  color: var(--muted);
+  line-height: 1.6;
+  margin-top: 0;
+}
+
+.card {
+  background: var(--white);
+  padding: 22px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  margin: 20px 0;
+  box-shadow: 0 4px 18px rgba(15, 50, 30, .04);
+}
+
+.card h2 {
+  margin-top: 0;
+  font-size: 19px;
+}
+
+.notice {
+  background: #fff6df;
+  border: 1px solid #ead49a;
+  color: #644d16;
+  padding: 13px;
+  border-radius: 9px;
+  line-height: 1.6;
+  font-size: 13px;
+  margin: 18px 0;
+}
+
+.banner {
+  padding: 13px;
+  border-radius: 8px;
+  margin: 14px 0;
+  display: none;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.banner.success {
+  display: block;
+  background: #e2f5e8;
+  color: #175a32;
+}
+
+.banner.error {
+  display: block;
+  background: #fde8e8;
+  color: #8a2020;
+}
+
+.banner.info {
+  display: block;
+  background: #e9f1fb;
+  color: #214f82;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 7px;
+}
+
+input, select, textarea {
+  width: 100%;
+  border: 1px solid #cbd8cc;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 15px;
+  background: white;
+  color: var(--text);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid #c2dfc8;
+  border-color: var(--green2);
+}
+
+.field {
+  min-width: 0;
+}
+
+.help {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+.primary {
+  background: var(--green2);
+  color: white;
+}
+
+.gold {
+  background: var(--gold);
+  color: #2b2719;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.stat {
+  background: #f5f8f4;
+  border: 1px solid var(--border);
+  padding: 17px;
+  border-radius: 10px;
+}
+
+.stat strong {
+  display: block;
+  font-size: 25px;
+  color: var(--green);
+}
+
+.stat span {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 7px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 750px;
+  font-size: 13px;
+}
+
+th, td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  background: #f1f5f0;
+  color: var(--green);
+}
+
+.status {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 5px 9px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.status.done {
+  background: #def3e4;
+  color: #1b6635;
+}
+
+.status.pending {
+  background: #fff0d0;
+  color: #7b5412;
+}
+
+.hidden {
+  display: none !important;
+}
+
+footer {
+  text-align: center;
+  padding: 22px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+@media (max-width: 600px) {
+  .grid, .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  h1 {
+    font-size: 23px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="brand">🌱 AgroSense <span>Nigeria</span></div>
+      <p>Soil Research and Laboratory Management</p>
+    </div>
+
+    <div class="actions" style="margin:0">
+      <a href="index.html" class="button"
+         style="background:white;color:#123d2b;text-decoration:none">
+        Main Dashboard
+      </a>
+
+      <button id="logoutBtn" class="logout hidden">
+        Sign Out
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <h1>Laboratory Results</h1>
+
+  <p class="subtitle">
+    Record laboratory reference measurements for registered soil samples
+    and prepare the dataset for sensor calibration and scientific evaluation.
+  </p>
+
+  <div class="notice">
+    <strong>Research integrity:</strong>
+    Enter only measurements obtained from actual laboratory reports.
+    Do not enter simulated values as real results. This module records
+    laboratory results; it does not independently verify the laboratory's
+    methods or certify sensor accuracy.
+  </div>
+
+  <div id="message" class="banner" role="status" aria-live="polite"></div>
+
+  <!-- LOGIN -->
+
+  <section id="loginCard" class="card">
+    <h2>Researcher Access</h2>
+
+    <p class="subtitle">
+      Sign in with your existing AgroSense researcher account.
+    </p>
+
+    <form id="loginForm">
+      <div class="grid">
+        <div class="field">
+          <label for="email">Researcher Email</label>
+          <input id="email" type="email" required autocomplete="username">
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" type="password" required
+                 autocomplete="current-password">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="primary" id="loginBtn" type="submit">
+          Sign In
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- RESEARCH WORKSPACE -->
+
+  <section id="workspace" class="hidden">
+
+    <section class="card">
+      <h2>Research Overview</h2>
+
+      <div class="stats">
+        <div class="stat">
+          <strong id="totalSamples">0</strong>
+          <span>Registered samples</span>
+        </div>
+
+        <div class="stat">
+          <strong id="completedSamples">0</strong>
+          <span>Samples with recorded lab results</span>
+        </div>
+
+        <div class="stat">
+          <strong id="pendingSamples">0</strong>
+          <span>Awaiting complete lab results</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Enter Laboratory Measurements</h2>
+
+      <p class="subtitle">
+        Select an existing sample. Its sensor measurements will be shown
+        for reference while you enter laboratory measurements.
+      </p>
+
+      <form id="labForm">
+
+        <div class="field">
+          <label for="sampleSelect">Registered Soil Sample *</label>
+          <select id="sampleSelect" required>
+            <option value="">Loading samples...</option>
+          </select>
+          <div class="help">
+            Samples must first be registered through the main dashboard.
+          </div>
+        </div>
+
+        <div id="sensorReference" class="notice hidden">
+          <strong>Recorded sensor readings</strong>
+          <div id="sensorValues" style="margin-top:8px"></div>
+        </div>
+
+        <h3>Laboratory Reference Results</h3>
+
+        <p class="help">
+          Enter the reported values and their units exactly as provided
+          by the laboratory. This form assumes mg/kg for all three fields.
+          Confirm that the laboratory's reporting basis and extraction
+          method are compatible before comparing values.
+        </p>
+
+        <div class="grid" style="margin-top:18px">
+
+          <div class="field">
+            <label for="labNitrate">Laboratory Nitrate (mg/kg)</label>
+            <input id="labNitrate" type="number" min="0" step="any"
+                   placeholder="Enter laboratory result">
+          </div>
+
+          <div class="field">
+            <label for="labAmmonium">Laboratory Ammonium (mg/kg)</label>
+            <input id="labAmmonium" type="number" min="0" step="any"
+                   placeholder="Enter laboratory result">
+          </div>
+
+          <div class="field">
+            <label for="labPhosphorus">
+              Laboratory Available Phosphorus (mg/kg)
+            </label>
+            <input id="labPhosphorus" type="number" min="0" step="any"
+                   placeholder="Enter laboratory result">
+            <div class="help">
+              Record the extraction method in the notes if known.
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="labNotes">Laboratory Notes</label>
+            <textarea id="labNotes" rows="4"
+              placeholder="Laboratory name, test method, report reference, or other relevant details"></textarea>
+          </div>
+
+        </div>
+
+        <div class="notice">
+          <strong>Before saving:</strong>
+          Make sure these results belong to the selected sample ID.
+          Leave a field blank if the laboratory did not report that
+          measurement. Do not enter zero to represent a missing result.
+        </div>
+
+        <div class="actions">
+          <button type="submit" id="saveBtn" class="primary">
+            Save Laboratory Results
+          </button>
+
+          <button type="button" id="clearBtn" class="gold">
+            Clear Form
+          </button>
+
+          <button type="button" id="refreshBtn" class="gold">
+            Refresh Samples
+          </button>
+        </div>
+
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Laboratory Results Register</h2>
+
+      <div class="field" style="margin-bottom:15px">
+        <label for="searchInput">Search Samples</label>
+        <input id="searchInput" type="search"
+               placeholder="Search by sample ID or farm name">
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Sample ID</th>
+              <th>Farm</th>
+              <th>State</th>
+              <th>Nitrate</th>
+              <th>Ammonium</th>
+              <th>Phosphorus</th>
+              <th>Record Status</th>
+            </tr>
+          </thead>
+
+          <tbody id="resultsBody">
+            <tr>
+              <td colspan="7">Loading records...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </section>
+
+</main>
+
+<footer>
+  AgroSense Nigeria · Research prototype · Laboratory results must be
+  supported by genuine measurements.
+</footer>
+
+<script>
+"use strict";
+
+/*
+  This is the Supabase publishable key used by the existing AgroSense
+  website. Never place a service_role key or database password here.
+*/
+
+const SUPABASE_URL =
+  "https://oyooxynailoudqtwtlnl.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_4oUifA2Qqiuf7JEAJZv58A_qzJrWuzW";
+
+const client = window.supabase
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+  : null;
+
+const $ = id => document.getElementById(id);
+
+let currentSession = null;
+let samples = [];
+let saving = false;
+
+function showMessage(text, type = "info") {
+  const box = $("message");
+  box.textContent = text;
+  box.className = "banner " + type;
+  box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function hideMessage() {
+  $("message").textContent = "";
+  $("message").className = "banner";
+}
+
+function numberOrNull(value) {
+  if (value === "" || value === null || value === undefined) {
+    return null;
+  }
+
+  const n = Number(value);
+
+  return Number.isFinite(n) ? n : null;
+}
+
+function formatValue(value) {
+  return value === null || value === undefined || value === ""
+    ? "Not recorded"
+    : String(value);
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
+
+function setSignedIn(signedIn) {
+  $("loginCard").classList.toggle("hidden", signedIn);
+  $("workspace").classList.toggle("hidden", !signedIn);
+  $("logoutBtn").classList.toggle("hidden", !signedIn);
+}
+
+function completeLabRecord(sample) {
+  return sample.lab_validated === true;
+}
+
+function updateStats() {
+  const completed = samples.filter(completeLabRecord).length;
+
+  $("totalSamples").textContent = samples.length;
+  $("completedSamples").textContent = completed;
+  $("pendingSamples").textContent = samples.length - completed;
+}
+
+async function loadSamples() {
+  if (!currentSession) return;
+
+  $("resultsBody").innerHTML =
+    '<tr><td colspan="7">Loading records...</td></tr>';
+
+  const { data, error } = await client
+    .from("soil_samples")
+    .select(`
+      sample_id,
+      farm_name,
+      state,
+      collection_date,
+      nitrate_sensor,
+      ammonium_sensor,
+      phosphorus_sensor,
+      lab_nitrate_mg_kg,
+      lab_ammonium_mg_kg,
+      lab_phosphorus_mg_kg,
+      lab_validated,
+      notes
+    `)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    $("resultsBody").innerHTML =
+      '<tr><td colspan="7">Could not load records.</td></tr>';
+
+    showMessage(
+      "Could not load soil samples: " + error.message +
+      ". Check your Supabase SELECT permissions.",
+      "error"
+    );
+    return;
+  }
+
+  samples = data || [];
+
+  renderSampleOptions();
+  renderResults();
+  updateStats();
+}
+
+function renderSampleOptions() {
+  const select = $("sampleSelect");
+  const previous = select.value;
+
+  select.innerHTML = '<option value="">Choose a sample</option>';
+
+  samples.forEach(sample => {
+    const option = document.createElement("option");
+
+    option.value = sample.sample_id;
+    option.textContent =
+      `${sample.sample_id} — ${sample.farm_name} (${sample.state})`;
+
+    select.appendChild(option);
+  });
+
+  if (samples.some(s => s.sample_id === previous)) {
+    select.value = previous;
+  }
+
+  showSensorReference();
+}
+
+function showSensorReference() {
+  const id = $("sampleSelect").value;
+  const sample = samples.find(s => s.sample_id === id);
+
+  if (!sample) {
+    $("sensorReference").classList.add("hidden");
+    return;
+  }
+
+  $("sensorReference").classList.remove("hidden");
+
+  $("sensorValues").textContent =
+    `Nitrate sensor: ${formatValue(sample.nitrate_sensor)} · ` +
+    `Ammonium sensor: ${formatValue(sample.ammonium_sensor)} · ` +
+    `Phosphorus sensor: ${formatValue(sample.phosphorus_sensor)}`;
+}
+
+function renderResults() {
+  const query = $("searchInput").value.trim().toLowerCase();
+
+  const filtered = samples.filter(sample =>
+    String(sample.sample_id).toLowerCase().includes(query) ||
+    String(sample.farm_name).toLowerCase().includes(query)
+  );
+
+  if (!filtered.length) {
+    $("resultsBody").innerHTML =
+      '<tr><td colspan="7">No matching samples found.</td></tr>';
+    return;
+  }
+
+  $("resultsBody").innerHTML = filtered.map(sample => {
+    const done = completeLabRecord(sample);
+
+    return `
+      <tr>
+        <td>${escapeHTML(sample.sample_id)}</td>
+        <td>${escapeHTML(sample.farm_name)}</td>
+        <td>${escapeHTML(sample.state)}</td>
+        <td>${escapeHTML(formatValue(sample.lab_nitrate_mg_kg))}</td>
+        <td>${escapeHTML(formatValue(sample.lab_ammonium_mg_kg))}</td>
+        <td>${escapeHTML(formatValue(sample.lab_phosphorus_mg_kg))}</td>
+        <td>
+          <span class="status ${done ? "done" : "pending"}">
+            ${done ? "Results recorded" : "Pending / incomplete"}
+          </span>
+          <br>
+          <button type="button"
+            class="gold"
+            style="margin-top:8px;padding:7px 10px"
+            data-edit="${escapeHTML(sample.sample_id)}">
+            ${done ? "Review / Edit" : "Enter Results"}
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join("");
+
+  $("resultsBody").querySelectorAll("[data-edit]").forEach(button => {
+    button.addEventListener("click", () => {
+      $("sampleSelect").value = button.dataset.edit;
+      loadSelectedResults();
+      $("labForm").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    });
+  });
+}
+
+function loadSelectedResults() {
+  const id = $("sampleSelect").value;
+  const sample = samples.find(s => s.sample_id === id);
+
+  showSensorReference();
+
+  if (!sample) {
+    $("labNitrate").value = "";
+    $("labAmmonium").value = "";
+    $("labPhosphorus").value = "";
+    $("labNotes").value = "";
+    return;
+  }
+
+  $("labNitrate").value =
+    sample.lab_nitrate_mg_kg ?? "";
+
+  $("labAmmonium").value =
+    sample.lab_ammonium_mg_kg ?? "";
+
+  $("labPhosphorus").value =
+    sample.lab_phosphorus_mg_kg ?? "";
+
+  $("labNotes").value = sample.notes ?? "";
+}
+
+function clearForm() {
+  $("labForm").reset();
+  $("sensorReference").classList.add("hidden");
+}
+
+async function saveLabResults(event) {
+  event.preventDefault();
+  hideMessage();
+
+  if (!currentSession) {
+    showMessage("Please sign in before saving laboratory results.", "error");
+    return;
+  }
+
+  if (saving) return;
+
+  const id = $("sampleSelect").value;
+  const sample = samples.find(s => s.sample_id === id);
+
+  if (!sample) {
+    showMessage("Please select a registered soil sample.", "error");
+    return;
+  }
+
+  const nitrate = numberOrNull($("labNitrate").value);
+  const ammonium = numberOrNull($("labAmmonium").value);
+  const phosphorus = numberOrNull($("labPhosphorus").value);
+
+  if (nitrate === null && ammonium === null && phosphorus === null) {
+    showMessage(
+      "Enter at least one genuine laboratory measurement before saving.",
+      "error"
+    );
+    return;
+  }
+
+  for (const [label, value] of [
+    ["Nitrate", nitrate],
+    ["Ammonium", ammonium],
+    ["Phosphorus", phosphorus]
+  ]) {
+    if (value !== null && value < 0) {
+      showMessage(label + " cannot be negative.", "error");
+      return;
+    }
+  }
+
+  /*
+    Preserve previously recorded results if a field is left blank.
+    This allows a researcher to add the remaining results later.
+  */
+  const row = {
+    lab_nitrate_mg_kg:
+      nitrate ?? sample.lab_nitrate_mg_kg,
+
+    lab_ammonium_mg_kg:
+      ammonium ?? sample.lab_ammonium_mg_kg,
+
+    lab_phosphorus_mg_kg:
+      phosphorus ?? sample.lab_phosphorus_mg_kg,
+
+    notes: $("labNotes").value.trim() || sample.notes || null
+  };
+
+  const allThreePresent =
+    row.lab_nitrate_mg_kg !== null &&
+    row.lab_nitrate_mg_kg !== undefined &&
+    row.lab_ammonium_mg_kg !== null &&
+    row.lab_ammonium_mg_kg !== undefined &&
+    row.lab_phosphorus_mg_kg !== null &&
+    row.lab_phosphorus_mg_kg !== undefined;
+
+  /*
+    This flag means all three laboratory fields have been recorded.
+    It does NOT certify sensor accuracy or laboratory quality.
+  */
+  row.lab_validated = Boolean(allThreePresent);
+
+  saving = true;
+  $("saveBtn").disabled = true;
+  $("saveBtn").textContent = "Saving...";
+
+  try {
+    const { error } = await client
+      .from("soil_samples")
+      .update(row)
+      .eq("sample_id", id)
+      .select("sample_id");
+
+    if (error) {
+      showMessage(
+        "Could not save laboratory results: " + error.message +
+        ". Check your Supabase UPDATE policy.",
+        "error"
+      );
+      return;
+    }
+
+    showMessage(
+      row.lab_validated
+        ? "Laboratory results saved. All three lab fields are recorded; independent scientific validation is still required."
+        : "Laboratory results saved. This sample is still marked pending because one or more laboratory fields are missing.",
+      "success"
+    );
+
+    await loadSamples();
+    $("sampleSelect").value = id;
+    loadSelectedResults();
+
+  } catch (error) {
+    showMessage(
+      "Unexpected error: " + (error.message || "Unknown error"),
+      "error"
+    );
+  } finally {
+    saving = false;
+    $("saveBtn").disabled = false;
+    $("saveBtn").textContent = "Save Laboratory Results";
+  }
+}
+
+async function login(event) {
+  event.preventDefault();
+  hideMessage();
+
+  if (!client) {
+    showMessage(
+      "Supabase library did not load. Check your internet connection and refresh the page.",
+      "error"
+    );
+    return;
+  }
+
+  $("loginBtn").disabled = true;
+  $("loginBtn").textContent = "Signing in...";
+
+  try {
+    const { data, error } = await client.auth.signInWithPassword({
+      email: $("email").value.trim(),
+      password: $("password").value
+    });
+
+    if (error) {
+      showMessage("Sign-in failed: " + error.message, "error");
+      return;
+    }
+
+    currentSession = data.session;
+    setSignedIn(true);
+    await loadSamples();
+
+  } finally {
+    $("loginBtn").disabled = false;
+    $("loginBtn").textContent = "Sign In";
+  }
+}
+
+async function logout() {
+  const { error } = await client.auth.signOut();
+
+  if (error) {
+    showMessage("Could not sign out: " + error.message, "error");
+    return;
+  }
+
+  currentSession = null;
+  samples = [];
+  setSignedIn(false);
+  clearForm();
+  hideMessage();
+}
+
+async function initialize() {
+  if (!client) {
+    showMessage(
+      "Supabase could not load. Check your internet connection and refresh this page.",
+      "error"
+    );
+    return;
+  }
+
+  $("loginForm").addEventListener("submit", login);
+  $("logoutBtn").addEventListener("click", logout);
+  $("labForm").addEventListener("submit", saveLabResults);
+
+  $("sampleSelect").addEventListener("change", loadSelectedResults);
+  $("searchInput").addEventListener("input", renderResults);
+
+  $("clearBtn").addEventListener("click", clearForm);
+  $("refreshBtn").addEventListener("click", loadSamples);
+
+  const { data, error } = await client.auth.getSession();
+
+  if (error) {
+    showMessage("Could not check session: " + error.message, "error");
+    return;
+  }
+
+  currentSession = data.session;
+
+  setSignedIn(Boolean(currentSession));
+
+  if (currentSession) {
+    await loadSamples();
+  }
+}
+
+initialize();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AgroSense Nigeria | Smart Soil Intelligence</title>
+
+<meta name="description" content="AgroSense Nigeria is developing data-driven soil testing and agricultural decision-support technology.">
+
+<style>
+:root {
+  --green:#123b2a;
+  --green2:#1b5a3c;
+  --green3:#759d76;
+  --gold:#d8b45a;
+  --cream:#f7f8f2;
+  --white:#fff;
+  --text:#26352c;
+  --muted:#718076;
+  --border:#e2e8df;
+  --shadow:0 8px 30px rgba(18,59,42,.07);
+}
+
+* {
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html {
+  scroll-behavior:smooth;
+  scroll-padding-top:20px;
+}
+
+body {
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--cream);
+  color:var(--text);
+  line-height:1.6;
+}
+
+button,input,select,textarea {
+  font:inherit;
+}
+
+button {
+  cursor:pointer;
+}
+
+button:disabled {
+  opacity:.65;
+  cursor:not-allowed;
+}
+
+a {
+  -webkit-tap-highlight-color:transparent;
+}
+
+.navbar {
+  background:var(--green);
+  color:white;
+  padding:16px 6%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+.brand {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.brand-icon {
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  background:var(--gold);
+  display:grid;
+  place-items:center;
+  color:var(--green);
+  font-size:24px;
+  flex-shrink:0;
+}
+
+.brand h1 {
+  font-size:19px;
+  line-height:1.3;
+}
+
+.brand small {
+  color:#c8d9ce;
+  font-size:11px;
+  letter-spacing:1px;
+}
+
+.nav-links {
+  display:flex;
+  gap:13px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.nav-links a {
+  color:#e4eee7;
+  text-decoration:none;
+  font-size:12px;
+  padding:7px 4px;
+}
+
+.nav-links a:hover {
+  color:var(--gold);
+}
+
+.nav-links a.module-link {
+  color:var(--gold);
+  font-weight:700;
+}
+
+.hero {
+  background:linear-gradient(125deg,#123b2a,#205c3d);
+  color:white;
+  padding:60px 6% 70px;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero::after {
+  content:"🌿";
+  position:absolute;
+  right:5%;
+  top:5px;
+  font-size:180px;
+  opacity:.09;
+  pointer-events:none;
+}
+
+.hero-content {
+  max-width:760px;
+  position:relative;
+  z-index:1;
+}
+
+.badge {
+  display:inline-block;
+  color:var(--gold);
+  border:1px solid rgba(216,180,90,.5);
+  padding:6px 12px;
+  border-radius:30px;
+  font-size:12px;
+  margin-bottom:18px;
+}
+
+.hero h2 {
+  font-size:clamp(30px,5vw,50px);
+  line-height:1.15;
+  margin-bottom:18px;
+}
+
+.hero h2 span {
+  color:var(--gold);
+}
+
+.hero p {
+  color:#d4e3d8;
+  max-width:610px;
+  margin-bottom:25px;
+  font-size:15px;
+}
+
+.btn {
+  border:0;
+  border-radius:9px;
+  padding:12px 17px;
+  font-weight:700;
+  font-size:13px;
+  display:inline-block;
+  text-decoration:none;
+  transition:transform .15s ease,background .15s ease;
+}
+
+.btn:hover {
+  transform:translateY(-1px);
+}
+
+.btn-gold {
+  background:var(--gold);
+  color:var(--green);
+}
+
+.btn-outline {
+  background:transparent;
+  color:var(--green);
+  border:1px solid var(--border);
+}
+
+.hero .btn-outline {
+  border-color:#9cb7a5;
+  color:white;
+  margin-left:8px;
+}
+
+.container {
+  width:88%;
+  max-width:1250px;
+  margin:auto;
+}
+
+.section {
+  padding:42px 0;
+}
+
+.section-heading {
+  margin-bottom:23px;
+}
+
+.section-heading h2 {
+  color:var(--green);
+  font-size:24px;
+}
+
+.section-heading p {
+  color:var(--muted);
+  font-size:13px;
+  margin-top:4px;
+}
+
+.demo-warning {
+  margin-top:25px;
+  background:#fff7df;
+  border:1px solid #f0d994;
+  border-radius:10px;
+  padding:13px 16px;
+  color:#75591c;
+  font-size:12px;
+}
+
+.connection-banner {
+  margin-top:14px;
+  border-radius:9px;
+  padding:12px 14px;
+  font-size:12px;
+  overflow-wrap:anywhere;
+}
+
+.connection-banner.info {
+  background:#e8f0e9;
+  color:#24583a;
+}
+
+.connection-banner.error {
+  background:#fff0ed;
+  color:#8c3025;
+}
+
+.connection-banner.success {
+  background:#e8f5e9;
+  color:#24583a;
+}
+
+.stats-grid {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:16px;
+}
+
+.card {
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:21px;
+  box-shadow:var(--shadow);
+  min-width:0;
+}
+
+.stat-label {
+  font-size:12px;
+  color:var(--muted);
+}
+
+.stat-value {
+  color:var(--green);
+  font-size:30px;
+  font-weight:800;
+  margin:9px 0 3px;
+  overflow-wrap:anywhere;
+}
+
+.stat-note {
+  font-size:11px;
+  color:var(--muted);
+}
+
+.content-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+.card h3 {
+  color:var(--green);
+  font-size:17px;
+  margin-bottom:5px;
+}
+
+.card-description {
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:18px;
+}
+
+.chart {
+  min-height:240px;
+  display:flex;
+  align-items:end;
+  justify-content:space-around;
+  gap:12px;
+  padding:20px 8px 0;
+  border-bottom:1px solid var(--border);
+}
+
+.bar-group {
+  flex:1;
+  display:flex;
+  min-width:0;
+  height:190px;
+  flex-direction:column;
+  justify-content:end;
+  align-items:center;
+  gap:5px;
+}
+
+.bar-stack {
+  display:flex;
+  align-items:end;
+  justify-content:center;
+  gap:3px;
+  height:155px;
+  width:100%;
+}
+
+.bar {
+  width:min(22px,30%);
+  min-height:3px;
+  border-radius:5px 5px 0 0;
+}
+
+.bar-label {
+  font-size:10px;
+  color:var(--muted);
+  text-align:center;
+  overflow-wrap:anywhere;
+}
+
+.chart-legend {
+  font-size:11px;
+  color:var(--muted);
+  margin-top:13px;
+}
+
+.legend-dot {
+  display:inline-block;
+  width:9px;
+  height:9px;
+  border-radius:2px;
+  margin:0 4px 0 10px;
+}
+
+.form-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.field {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.field.full {
+  grid-column:1/-1;
+}
+
+.field label {
+  font-size:12px;
+  font-weight:700;
+  color:var(--green);
+}
+
+.field input,
+.field select {
+  width:100%;
+  padding:11px;
+  border:1px solid var(--border);
+  background:#fff;
+  border-radius:8px;
+  outline:none;
+  min-width:0;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color:var(--green2);
+  box-shadow:0 0 0 2px rgba(27,90,60,.08);
+}
+
+.form-message {
+  font-size:12px;
+  margin-top:12px;
+  overflow-wrap:anywhere;
+}
+
+.table-wrap {
+  overflow-x:auto;
+  margin-top:15px;
+}
+
+table {
+  width:100%;
+  border-collapse:collapse;
+  min-width:650px;
+}
+
+th,td {
+  text-align:left;
+  padding:13px 12px;
+  border-bottom:1px solid var(--border);
+  font-size:12px;
+}
+
+th {
+  background:#f4f7f1;
+  color:var(--green);
+}
+
+td {
+  color:#435247;
+}
+
+.status {
+  display:inline-block;
+  padding:4px 8px;
+  background:#fff1ce;
+  color:#7a5b17;
+  border-radius:20px;
+  font-size:10px;
+}
+
+.status.complete {
+  background:#e4f4e7;
+  color:#24583a;
+}
+
+.table-actions {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.table-actions input {
+  border:1px solid var(--border);
+  padding:10px;
+  border-radius:8px;
+  max-width:100%;
+}
+
+.module-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+}
+
+.module-card {
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:10px;
+}
+
+.module-icon {
+  font-size:30px;
+}
+
+.module-card p {
+  color:var(--muted);
+  font-size:12px;
+}
+
+.module-card .btn {
+  margin-top:auto;
+}
+
+.features {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.feature-icon {
+  font-size:28px;
+  margin-bottom:10px;
+}
+
+.feature p {
+  color:var(--muted);
+  font-size:12px;
+  margin-top:7px;
+}
+
+.research-note {
+  padding:14px;
+  border-left:4px solid var(--gold);
+  background:#fffaf0;
+  color:#65552c;
+  border-radius:5px;
+  font-size:12px;
+  margin-top:15px;
+}
+
+footer {
+  margin-top:30px;
+  background:var(--green);
+  color:#d6e3da;
+  padding:30px 6%;
+  text-align:center;
+  font-size:12px;
+}
+
+footer strong {
+  color:var(--gold);
+}
+
+footer a {
+  color:var(--gold);
+  text-decoration:none;
+}
+
+[hidden] {
+  display:none!important;
+}
+
+@media(max-width:1000px) {
+  .stats-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .content-grid {
+    grid-template-columns:1fr;
+  }
+
+  .features {
+    grid-template-columns:1fr 1fr;
+  }
+
+  .navbar {
+    align-items:flex-start;
+  }
+}
+
+@media(max-width:600px) {
+  .navbar {
+    padding:14px 5%;
+  }
+
+  .nav-links {
+    width:100%;
+    gap:5px 12px;
+  }
+
+  .nav-links a {
+    font-size:11px;
+  }
+
+  .hero {
+    padding:43px 5%;
+  }
+
+  .hero .btn-outline {
+    margin:10px 0 0;
+  }
+
+  .container {
+    width:92%;
+  }
+
+  .stats-grid {
+    gap:10px;
+  }
+
+  .card {
+    padding:15px;
+  }
+
+  .stat-value {
+    font-size:24px;
+  }
+
+  .form-grid {
+    grid-template-columns:1fr;
+  }
+
+  .field.full {
+    grid-column:auto;
+  }
+
+  .features,
+  .module-grid {
+    grid-template-columns:1fr;
+  }
+
+  .table-actions {
+    align-items:stretch;
+  }
+
+  .table-actions input,
+  .table-actions button {
+    width:100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="brand">
+    <div class="brand-icon">🌱</div>
+    <div>
+      <h1>AgroSense Nigeria</h1>
+      <small>SMART SOIL INTELLIGENCE</small>
+    </div>
+  </div>
+
+  <nav class="nav-links" aria-label="Main navigation">
+    <a href="#home">Home</a>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#register">Register Sample</a>
+    <a href="#samples">Samples</a>
+    <a href="lab-results.html" class="module-link">🧪 Laboratory</a>
+    <a href="calibration.html" class="module-link">📊 Calibration</a>
+    <a href="#researcherAccess">Researcher Login</a>
+    <a href="#about">About</a>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-content">
+    <span class="badge">🌾 AGRICULTURAL TECHNOLOGY RESEARCH</span>
+
+    <h2>
+      Better Soil Insights.<br>
+      <span>Smarter Farming Decisions.</span>
+    </h2>
+
+    <p>
+      AgroSense Nigeria is developing a soil-testing and
+      agricultural decision-support platform designed to help
+      farmers and researchers study soil measurements through
+      data analysis and laboratory comparisons.
+    </p>
+
+    <a href="#register" class="btn btn-gold">Register a Sample →</a>
+    <a href="#dashboard" class="btn btn-outline">View Dashboard</a>
+  </div>
+</section>
+
+<main class="container">
+
+  <div class="demo-warning">
+    <strong>RESEARCH PROTOTYPE:</strong>
+    Example readings are simulated. No physical sensor is connected
+    through this website. Simulated values must not be treated as real
+    measurements or used to make fertilizer decisions. Sign in to view
+    cloud records.
+  </div>
+
+  <div id="connectionMessage"
+       class="connection-banner info"
+       role="status"
+       aria-live="polite">
+    Initializing AgroSense...
+  </div>
+
+  <!-- RESEARCHER LOGIN -->
+
+  <section class="section" id="researcherAccess">
+    <div class="section-heading">
+      <h2>Researcher Access</h2>
+      <p>Sign in to manage soil samples stored in the cloud.</p>
+    </div>
+
+    <div class="card">
+
+      <div id="loginPanel">
+        <form id="loginForm">
+          <div class="form-grid">
+
+            <div class="field">
+              <label for="researcherEmail">Researcher Email</label>
+              <input
+                type="email"
+                id="researcherEmail"
+                placeholder="Enter your registered email"
+                autocomplete="username"
+                required>
+            </div>
+
+            <div class="field">
+              <label for="researcherPassword">Password</label>
+              <input
+                type="password"
+                id="researcherPassword"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required>
+            </div>
+
+            <div class="field full">
+              <button type="submit"
+                      class="btn btn-gold"
+                      id="loginButton">
+                Sign In
+              </button>
+            </div>
+
+          </div>
+        </form>
+      </div>
+
+      <div id="researcherSession" hidden>
+        <p>
+          Signed in as
+          <strong id="researcherIdentity"></strong>
+        </p>
+
+        <p style="margin:10px 0;font-size:12px;color:#718076">
+          Your session is active. Database access is controlled by
+          Supabase authentication and Row Level Security policies.
+        </p>
+
+        <button type="button"
+                class="btn btn-outline"
+                id="logoutButton">
+          Sign Out
+        </button>
+      </div>
+
+      <p class="form-message" id="authMessage" role="status"></p>
+    </div>
+  </section>
+
+  <!-- RESEARCH DASHBOARD -->
+
+  <section class="section" id="dashboard">
+    <div class="section-heading">
+      <h2>Research Dashboard</h2>
+      <p id="dashboardDescription">
+        Overview of demonstration records.
+      </p>
+    </div>
+
+    <div class="stats-grid">
+
+      <div class="card">
+        <div class="stat-label">Registered Samples</div>
+        <div class="stat-value" id="sampleCount">0</div>
+        <div class="stat-note">Records currently displayed</div>
+      </div>
+
+      <div class="card">
+        <div class="stat-label">Farms Represented</div>
+        <div class="stat-value" id="farmCount">0</div>
+        <div class="stat-note">Distinct recorded farm names</div>
+      </div>
+
+      <div class="card">
+        <div class="stat-label">States Represented</div>
+        <div class="stat-value" id="stateCount">0</div>
+        <div class="stat-note">Distinct states in the records</div>
+      </div>
+
+      <div class="card">
+        <div class="stat-label">Complete Lab Records</div>
+        <div class="stat-value" id="validatedCount">0</div>
+        <div class="stat-note">
+          All three lab fields have values; not proof of accuracy
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stat-label">Awaiting Complete Lab Results</div>
+        <div class="stat-value" id="awaitingLabCount">0</div>
+        <div class="stat-note">
+          One or more laboratory fields are missing
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stat-label">Samples with Paired Results</div>
+        <div class="stat-value" id="calibrationReadyCount">0</div>
+        <div class="stat-note">
+          At least one sensor and lab pair is recorded
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stat-label">Kwara Samples</div>
+        <div class="stat-value" id="kwaraCount">0</div>
+        <div class="stat-note">Recorded samples from Kwara</div>
+      </div>
+
+      <div class="card">
+        <div class="stat-label">Niger Samples</div>
+        <div class="stat-value" id="nigerCount">0</div>
+        <div class="stat-note">Recorded samples from Niger</div>
+      </div>
+
+    </div>
+
+    <div class="research-note">
+      <strong>How to interpret these counts:</strong>
+      A complete laboratory record means values are present for nitrate,
+      ammonium and phosphorus. A paired result means at least one
+      corresponding sensor output and laboratory value are both present.
+      These counts do not establish sensor accuracy or independent
+      scientific validation.
+    </div>
+  </section>
+
+  <!-- CHART AND PROJECT STATUS -->
+
+  <section class="section">
+    <div class="content-grid">
+
+      <div class="card">
+        <h3>Sensor Reading Overview</h3>
+        <p class="card-description">
+          Recorded sensor outputs for up to five recent samples.
+        </p>
+
+        <div class="chart" id="chart"></div>
+
+        <p class="chart-legend">
+          <span class="legend-dot" style="background:#d8b45a"></span>
+          Nitrate output
+          <span class="legend-dot" style="background:#1b5a3c"></span>
+          Ammonium output
+          <span class="legend-dot" style="background:#759d76"></span>
+          Phosphorus output
+        </p>
+
+        <p class="chart-legend">
+          Outputs may have different units or scales. This chart is
+          for inspection only, not a direct comparison of nutrient
+          concentrations.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Research Progress</h3>
+        <p class="card-description">
+          Current software status and proposed research activities.
+        </p>
+
+        <div style="margin-bottom:18px">
+          <strong style="font-size:13px">Software prototype</strong>
+          <p style="font-size:12px;color:#718076">
+            Dashboard, authentication and cloud sample registration.
+          </p>
+          <span class="status complete">Prototype available</span>
+        </div>
+
+        <div style="margin-bottom:18px">
+          <strong style="font-size:13px">Laboratory records</strong>
+          <p style="font-size:12px;color:#718076">
+            Enter reference results using the laboratory module.
+          </p>
+          <a href="lab-results.html"
+             class="btn btn-outline"
+             style="margin-top:8px">
+            Open Laboratory Module →
+          </a>
+        </div>
+
+        <div style="margin-bottom:18px">
+          <strong style="font-size:13px">Sensor calibration</strong>
+          <p style="font-size:12px;color:#718076">
+            Requires compatible sensor readings and laboratory
+            measurements from the same samples.
+          </p>
+          <a href="calibration.html"
+             class="btn btn-outline"
+             style="margin-top:8px">
+            Open Calibration →
+          </a>
+        </div>
+
+        <div>
+          <strong style="font-size:13px">Field research</strong>
+          <p style="font-size:12px;color:#718076">
+            The proposed study involves 50 soil samples from three
+            farms. Collection and validation remain to be completed.
+          </p>
+          <span class="status">Planned</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MODULE NAVIGATION -->
+
+  <section class="section" id="researchModules">
+    <div class="section-heading">
+      <h2>Research Modules</h2>
+      <p>
+        Access the different parts of the AgroSense research platform.
+      </p>
+    </div>
+
+    <div class="module-grid">
+
+      <div class="card module-card">
+        <div class="module-icon">🌱</div>
+        <h3>Main Dashboard</h3>
+        <p>
+          Register soil samples, view saved records, monitor research
+          counts and export the displayed records to CSV.
+        </p>
+        <a href="#register" class="btn btn-gold">
+          Register a Sample →
+        </a>
+      </div>
+
+      <div class="card module-card">
+        <div class="module-icon">🧪</div>
+        <h3>Laboratory Results</h3>
+        <p>
+          Select a registered sample and record its laboratory reference
+          values for nitrate, ammonium and phosphorus.
+        </p>
+        <a href="lab-results.html" class="btn btn-gold">
+          Open Laboratory Results →
+        </a>
+      </div>
+
+      <div class="card module-card">
+        <div class="module-icon">📊</div>
+        <h3>Calibration Dashboard</h3>
+        <p>
+          Review paired sensor and laboratory values and calculate
+          preliminary comparison metrics when suitable data exist.
+        </p>
+        <a href="calibration.html" class="btn btn-gold">
+          Open Calibration Dashboard →
+        </a>
+      </div>
+
+      <div class="card module-card">
+        <div class="module-icon">📁</div>
+        <h3>Research Data</h3>
+        <p>
+          Search the records currently displayed on this page and
+          export them for further analysis.
+        </p>
+        <a href="#samples" class="btn btn-gold">
+          View Sample Records →
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- REGISTER SAMPLE -->
+
+  <section class="section" id="register">
+    <div class="section-heading">
+      <h2>Register Soil Sample</h2>
+      <p>
+        Sign in before saving a sample to the cloud.
+        Leave unknown readings blank. Enter actual readings only
+        when you have measured them.
+      </p>
+    </div>
+
+    <div class="card">
+      <form id="sampleForm">
+        <div class="form-grid">
+
+          <div class="field">
+            <label for="sampleId">Sample ID *</label>
+            <input
+              id="sampleId"
+              placeholder="e.g. KW001"
+              required>
+          </div>
+
+          <div class="field">
+            <label for="farm">Farm Name *</label>
+            <input
+              id="farm"
+              placeholder="e.g. Farm A"
+              required>
+          </div>
+
+          <div class="field">
+            <label for="state">State *</label>
+            <select id="state" required>
+              <option value="">Select state</option>
+              <option value="Kwara">Kwara</option>
+              <option value="Niger">Niger</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="date">Collection Date *</label>
+            <input id="date" type="date" required>
+          </div>
+
+          <div class="field">
+            <label for="nitrate">Nitrate Sensor Output</label>
+            <input
+              id="nitrate"
+              type="number"
+              step="any"
+              placeholder="Optional">
+          </div>
+
+          <div class="field">
+            <label for="ammonium">Ammonium Sensor Output</label>
+            <input
+              id="ammonium"
+              type="number"
+              step="any"
+              placeholder="Optional">
+          </div>
+
+          <div class="field">
+            <label for="phosphorus">Phosphorus Test Output</label>
+            <input
+              id="phosphorus"
+              type="number"
+              step="any"
+              placeholder="Optional">
+          </div>
+
+          <div class="field">
+            <label for="moisture">Soil Moisture (%)</label>
+            <input
+              id="moisture"
+              type="number"
+              min="0"
+              max="100"
+              step="any"
+              placeholder="Optional">
+          </div>
+
+          <div class="field">
+            <label for="temperature">Soil Temperature (°C)</label>
+            <input
+              id="temperature"
+              type="number"
+              step="any"
+              placeholder="Optional">
+          </div>
+
+          <div class="field">
+            <label for="soilPH">Soil pH</label>
+            <input
+              id="soilPH"
+              type="number"
+              min="0"
+              max="14"
+              step="any"
+              placeholder="Optional">
+          </div>
+
+          <div class="field full">
+            <button
+              type="submit"
+              class="btn btn-gold"
+              id="saveSampleButton">
+              + Register Sample in Cloud
+            </button>
+          </div>
+
+        </div>
+
+        <p class="form-message"
+           id="formMessage"
+           role="status"
+           aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- SAMPLE RECORDS -->
+
+  <section class="section" id="samples">
+    <div class="section-heading">
+      <h2>Soil Sample Records</h2>
+      <p>
+        Search the displayed records and export them as CSV.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="table-actions">
+        <input
+          id="searchInput"
+          aria-label="Search samples"
+          placeholder="Search sample, farm or state...">
+
+        <button
+          class="btn btn-outline"
+          id="exportButton"
+          type="button">
+          Export CSV ↓
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Sample ID</th>
+              <th>Farm</th>
+              <th>State</th>
+              <th>Date</th>
+              <th>Nitrate Output</th>
+              <th>Ammonium Output</th>
+              <th>Phosphorus Output</th>
+              <th>Record Type</th>
+              <th>Lab Status</th>
+            </tr>
+          </thead>
+
+          <tbody id="sampleTable"></tbody>
+        </table>
+      </div>
+
+      <p
+        id="emptyMessage"
+        style="display:none;margin-top:15px;font-size:13px;color:#718076">
+        No matching samples found.
+      </p>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+
+  <section class="section" id="about">
+    <div class="section-heading">
+      <h2>What AgroSense Is Building</h2>
+      <p>A research-led agricultural technology project.</p>
+    </div>
+
+    <div class="features">
+
+      <div class="card feature">
+        <div class="feature-icon">🧪</div>
+        <h3>Soil Intelligence</h3>
+        <p>
+          Develop methods for measuring and estimating soil nutrient
+          properties and comparing them with appropriate laboratory
+          reference results.
+        </p>
+      </div>
+
+      <div class="card feature">
+        <div class="feature-icon">📊</div>
+        <h3>Data-Driven Research</h3>
+        <p>
+          Use statistical analysis and machine learning to investigate
+          relationships between sensor outputs and laboratory
+          measurements once sufficient suitable data are available.
+        </p>
+      </div>
+
+      <div class="card feature">
+        <div class="feature-icon">🌽</div>
+        <h3>Farmer Support</h3>
+        <p>
+          Work toward practical maize-production guidance grounded in
+          reliable soil tests and appropriate agricultural advice.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p><strong>AgroSense Nigeria</strong></p>
+  <p>Soil Intelligence for Better Agricultural Decisions.</p>
+
+  <p style="margin-top:10px">
+    <a href="index.html">Main Dashboard</a> ·
+    <a href="lab-results.html">Laboratory Results</a> ·
+    <a href="calibration.html">Calibration</a>
+  </p>
+
+  <p style="margin-top:10px">
+    Research prototype · © <span id="year"></span> AgroSense Nigeria
+  </p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+"use strict";
+
+/* ================================================
+   SUPABASE CONFIGURATION
+
+   The publishable key is intended for frontend use.
+   Never place a service_role or secret key here.
+================================================ */
+
+const SUPABASE_URL =
+  "https://oyooxynailoudqtwtlnl.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_4oUifA2Qqiuf7JEAJZv58A_qzJrWuzW";
+
+let supabaseClient = null;
+
+/* ================================================
+   DEMONSTRATION RECORDS
+
+   These values are simulated, not field measurements.
+================================================ */
+
+const demoSamples = [
+  {
+    id:"DEMO001",
+    farm:"Demo Farm A",
+    state:"Kwara",
+    date:"2026-10-01",
+    nitrate:12.5,
+    ammonium:4.2,
+    phosphorus:8.5,
+    moisture:24,
+    temperature:27,
+    pH:null,
+    type:"Simulated",
+    labNitrate:null,
+    labAmmonium:null,
+    labPhosphorus:null,
+    labValidated:false
+  },
+  {
+    id:"DEMO002",
+    farm:"Demo Farm B",
+    state:"Niger",
+    date:"2026-10-02",
+    nitrate:15.2,
+    ammonium:5.1,
+    phosphorus:10.1,
+    moisture:31,
+    temperature:29,
+    pH:null,
+    type:"Simulated",
+    labNitrate:null,
+    labAmmonium:null,
+    labPhosphorus:null,
+    labValidated:false
+  },
+  {
+    id:"DEMO003",
+    farm:"Demo Farm C",
+    state:"Kwara",
+    date:"2026-10-03",
+    nitrate:10.8,
+    ammonium:3.8,
+    phosphorus:7.4,
+    moisture:19,
+    temperature:26,
+    pH:null,
+    type:"Simulated",
+    labNitrate:null,
+    labAmmonium:null,
+    labPhosphorus:null,
+    labValidated:false
+  }
+];
+
+let samples = demoSamples.map(sample => ({...sample}));
+let currentSession = null;
+let isCloudMode = false;
+let isSaving = false;
+let authListenerRegistered = false;
+
+const $ = id => document.getElementById(id);
+
+/* ================================================
+   GENERAL HELPERS
+================================================ */
+
+function localDateString() {
+  const now = new Date();
+  const offset = now.getTimezoneOffset() * 60000;
+
+  return new Date(now.getTime() - offset)
+    .toISOString()
+    .slice(0,10);
+}
+
+function safeNumber(value) {
+  if (
+    value === "" ||
+    value === null ||
+    value === undefined
+  ) {
+    return null;
+  }
+
+  const number = Number(value);
+
+  return Number.isFinite(number) ? number : null;
+}
+
+function displayValue(value) {
+  return value === null ||
+         value === undefined ||
+         value === ""
+    ? "Not recorded"
+    : String(value);
+}
+
+function showBanner(message,type="info") {
+  const banner = $("connectionMessage");
+
+  banner.textContent = message;
+  banner.className = "connection-banner " + type;
+}
+
+function showFormMessage(message,type="info") {
+  const element = $("formMessage");
+
+  element.textContent = message;
+  element.style.color =
+    type === "error" ? "#a32f24" :
+    type === "success" ? "#24583a" :
+    "#718076";
+}
+
+function showAuthMessage(message,type="info") {
+  const element = $("authMessage");
+
+  element.textContent = message;
+  element.style.color =
+    type === "error" ? "#a32f24" :
+    type === "success" ? "#24583a" :
+    "#718076";
+}
+
+/* ================================================
+   LABORATORY COMPLETENESS AND PAIRED RESULTS
+
+   These helpers count recorded fields only.
+   They do not establish scientific validity.
+================================================ */
+
+function hasValue(value) {
+  return value !== null &&
+         value !== undefined &&
+         value !== "";
+}
+
+function hasCompleteLabRecord(sample) {
+  return hasValue(sample.labNitrate) &&
+         hasValue(sample.labAmmonium) &&
+         hasValue(sample.labPhosphorus);
+}
+
+function hasAnyLabRecord(sample) {
+  return hasValue(sample.labNitrate) ||
+         hasValue(sample.labAmmonium) ||
+         hasValue(sample.labPhosphorus);
+}
+
+function hasPairedResult(sample) {
+  return (
+    (hasValue(sample.nitrate) &&
+     hasValue(sample.labNitrate)) ||
+
+    (hasValue(sample.ammonium) &&
+     hasValue(sample.labAmmonium)) ||
+
+    (hasValue(sample.phosphorus) &&
+     hasValue(sample.labPhosphorus))
+  );
+}
+
+function getLabStatus(sample) {
+  if (hasCompleteLabRecord(sample)) {
+    return "Lab fields complete";
+  }
+
+  if (hasAnyLabRecord(sample)) {
+    return "Lab results partial";
+  }
+
+  return "Awaiting lab results";
+}
+
+/* ================================================
+   DATABASE RECORD MAPPING
+================================================ */
+
+function fromDatabase(row) {
+  return {
+    id:row.sample_id,
+    farm:row.farm_name,
+    state:row.state,
+    date:row.collection_date,
+
+    nitrate:safeNumber(row.nitrate_sensor),
+    ammonium:safeNumber(row.ammonium_sensor),
+    phosphorus:safeNumber(row.phosphorus_sensor),
+
+    moisture:safeNumber(row.soil_moisture_percent),
+    temperature:safeNumber(row.soil_temperature_c),
+    pH:safeNumber(row.soil_ph),
+
+    labNitrate:safeNumber(row.lab_nitrate_mg_kg),
+    labAmmonium:safeNumber(row.lab_ammonium_mg_kg),
+    labPhosphorus:safeNumber(row.lab_phosphorus_mg_kg),
+
+    type:"Cloud record",
+
+    // This database flag is displayed separately from
+    // actual completeness of the three laboratory fields.
+    labValidated:row.lab_validated === true
+  };
+}
+
+/* ================================================
+   AUTHENTICATION UI
+================================================ */
+
+function updateAuthUI() {
+  const signedIn = Boolean(currentSession);
+
+  $("loginPanel").hidden = signedIn;
+  $("researcherSession").hidden = !signedIn;
+
+  $("researcherIdentity").textContent =
+    currentSession?.user?.email || "Researcher";
+
+  $("saveSampleButton").textContent = signedIn
+    ? "+ Register Sample in Cloud"
+    : "Sign in to Register a Sample";
+
+  $("dashboardDescription").textContent = isCloudMode
+    ? "Showing records retrieved from the cloud database."
+    : "Showing demonstration records only. Sign in to view cloud records.";
+}
+
+async function signIn(event) {
+  event.preventDefault();
+
+  if (!supabaseClient) {
+    showAuthMessage(
+      "Supabase did not load. Check your internet connection and reload.",
+      "error"
+    );
+    return;
+  }
+
+  const email = $("researcherEmail").value.trim();
+  const password = $("researcherPassword").value;
+  const button = $("loginButton");
+
+  button.disabled = true;
+  button.textContent = "Signing in...";
+
+  showAuthMessage("Checking your credentials...");
+
+  try {
+    const {data,error} =
+      await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
+
+    if (error) throw error;
+
+    currentSession = data.session;
+
+    await loadCloudSamples();
+
+    $("loginForm").reset();
+
+    showAuthMessage(
+      "Sign-in successful.",
+      "success"
+    );
+  } catch (error) {
+    currentSession = null;
+    isCloudMode = false;
+    samples = demoSamples.map(sample => ({...sample}));
+
+    updateAuthUI();
+    renderTable();
+
+    showAuthMessage(
+      error.message || "Sign-in failed. Please try again.",
+      "error"
+    );
+  } finally {
+    button.disabled = false;
+    button.textContent = "Sign In";
+  }
+}
+
+async function signOut() {
+  if (!supabaseClient) return;
+
+  try {
+    const {error} =
+      await supabaseClient.auth.signOut();
+
+    if (error) throw error;
+
+    currentSession = null;
+    isCloudMode = false;
+    samples = demoSamples.map(sample => ({...sample}));
+
+    updateAuthUI();
+    renderTable();
+
+    showAuthMessage(
+      "You have signed out.",
+      "success"
+    );
+
+    showBanner(
+      "Signed out. Showing demonstration records.",
+      "info"
+    );
+  } catch (error) {
+    showAuthMessage(
+      "Sign-out error: " + error.message,
+      "error"
+    );
+  }
+}
+
+/* ================================================
+   LOAD CLOUD RECORDS
+================================================ */
+
+async function loadCloudSamples() {
+  if (!currentSession || !supabaseClient) {
+    isCloudMode = false;
+    samples = demoSamples.map(sample => ({...sample}));
+
+    updateAuthUI();
+    renderTable();
+    return;
+  }
+
+  showBanner(
+    "Loading soil samples from Supabase...",
+    "info"
+  );
+
+  try {
+    const {data,error} = await supabaseClient
+      .from("soil_samples")
+      .select(
+        "sample_id,farm_name,state,collection_date," +
+        "nitrate_sensor,ammonium_sensor,phosphorus_sensor," +
+        "soil_moisture_percent,soil_temperature_c,soil_ph," +
+        "lab_nitrate_mg_kg,lab_ammonium_mg_kg," +
+        "lab_phosphorus_mg_kg,lab_validated,created_at"
+      )
+      .order("created_at", {ascending:false});
+
+    if (error) throw error;
+
+    samples = (data || []).map(fromDatabase);
+    isCloudMode = true;
+
+    updateAuthUI();
+    renderTable();
+
+    showBanner(
+      "Cloud connected. Loaded " +
+      samples.length +
+      " saved soil sample(s).",
+      "success"
+    );
+
+  } catch (error) {
+    isCloudMode = false;
+    samples = [];
+
+    updateAuthUI();
+    renderTable();
+
+    showBanner(
+      "Could not load cloud records: " +
+      error.message +
+      ". Check the soil_samples table, selected columns, " +
+      "researcher login and RLS policies.",
+      "error"
+    );
+  }
+}
+
+/* ================================================
+   REGISTER SAMPLE IN SUPABASE
+================================================ */
+
+async function registerSample(event) {
+  event.preventDefault();
+
+  if (!currentSession) {
+    showFormMessage(
+      "Please sign in before registering a cloud sample.",
+      "error"
+    );
+
+    $("researcherAccess").scrollIntoView({
+      behavior:"smooth"
+    });
+
+    return;
+  }
+
+  if (!isCloudMode) {
+    showFormMessage(
+      "Cloud records are not loaded yet. Resolve the database connection first.",
+      "error"
+    );
+    return;
+  }
+
+  if (isSaving) return;
+
+  const sampleId = $("sampleId").value.trim();
+  const farmName = $("farm").value.trim();
+  const state = $("state").value;
+  const collectionDate = $("date").value;
+
+  if (!sampleId || !farmName || !state || !collectionDate) {
+    showFormMessage(
+      "Please complete all required fields.",
+      "error"
+    );
+    return;
+  }
+
+  if (!["Kwara","Niger"].includes(state)) {
+    showFormMessage(
+      "Please select Kwara or Niger.",
+      "error"
+    );
+    return;
+  }
+
+  const duplicate = samples.some(
+    sample =>
+      sample.id.toLowerCase() === sampleId.toLowerCase()
+  );
+
+  if (duplicate) {
+    showFormMessage(
+      "That sample ID already exists in the displayed records. Use a unique ID.",
+      "error"
+    );
+    return;
+  }
+
+  const row = {
+    sample_id:sampleId,
+    farm_name:farmName,
+    state,
+    collection_date:collectionDate,
+    crop:"Maize",
+
+    nitrate_sensor:safeNumber($("nitrate").value),
+    ammonium_sensor:safeNumber($("ammonium").value),
+    phosphorus_sensor:safeNumber($("phosphorus").value),
+
+    soil_moisture_percent:safeNumber($("moisture").value),
+    soil_temperature_c:safeNumber($("temperature").value),
+    soil_ph:safeNumber($("soilPH").value),
+
+    lab_validated:false
+  };
+
+  isSaving = true;
+
+  $("saveSampleButton").disabled = true;
+  $("saveSampleButton").textContent = "Saving to cloud...";
+
+  showFormMessage(
+    "Saving your sample to Supabase..."
+  );
+
+  try {
+    const {error} = await supabaseClient
+      .from("soil_samples")
+      .insert(row);
+
+    if (error) throw error;
+
+    $("sampleForm").reset();
+    $("date").value = localDateString();
+
+    showFormMessage(
+      "Sample saved successfully to the cloud database.",
+      "success"
+    );
+
+    await loadCloudSamples();
+
+  } catch (error) {
+    showFormMessage(
+      "Sample was not saved: " + error.message,
+      "error"
+    );
+  } finally {
+    isSaving = false;
+
+    $("saveSampleButton").disabled = false;
+
+    $("saveSampleButton").textContent =
+      currentSession
+        ? "+ Register Sample in Cloud"
+        : "Sign in to Register a Sample";
+  }
+}
+
+/* ================================================
+   TABLE RENDERING
+================================================ */
+
+function renderTable() {
+  const query =
+    $("searchInput").value.toLowerCase().trim();
+
+  const filtered = samples.filter(sample =>
+    [
+      sample.id,
+      sample.farm,
+      sample.state,
+      sample.date
+    ].some(value =>
+      String(value || "")
+        .toLowerCase()
+        .includes(query)
+    )
+  );
+
+  const body = $("sampleTable");
+  body.replaceChildren();
+
+  filtered.forEach(sample => {
+    const row = document.createElement("tr");
+
+    const values = [
+      sample.id,
+      sample.farm,
+      sample.state,
+      sample.date,
+      displayValue(sample.nitrate),
+      displayValue(sample.ammonium),
+      displayValue(sample.phosphorus),
+      sample.type,
+      getLabStatus(sample)
+    ];
+
+    values.forEach((value,index) => {
+      const cell = document.createElement("td");
+
+      cell.textContent = value;
+
+      if (index === 8 &&
+          hasCompleteLabRecord(sample)) {
+        const status = document.createElement("span");
+        status.className = "status complete";
+        status.textContent = "Lab fields complete";
+        cell.replaceChildren(status);
+      } else if (index === 8) {
+        const status = document.createElement("span");
+        status.className = "status";
+        status.textContent = value;
+        cell.replaceChildren(status);
+      }
+
+      row.appendChild(cell);
+    });
+
+    body.appendChild(row);
+  });
+
+  $("emptyMessage").style.display =
+    filtered.length ? "none" : "block";
+
+  updateStats();
+  renderChart();
+}
+
+/* ================================================
+   RESEARCH STATISTICS
+================================================ */
+
+function updateStats() {
+  $("sampleCount").textContent = samples.length;
+
+  $("farmCount").textContent =
+    new Set(
+      samples.map(sample => sample.farm).filter(Boolean)
+    ).size;
+
+  $("stateCount").textContent =
+    new Set(
+      samples.map(sample => sample.state).filter(Boolean)
+    ).size;
+
+  const completeLabCount =
+    samples.filter(hasCompleteLabRecord).length;
+
+  const awaitingLabCount =
+    samples.filter(
+      sample => !hasCompleteLabRecord(sample)
+    ).length;
+
+  const pairedCount =
+    samples.filter(hasPairedResult).length;
+
+  $("validatedCount").textContent =
+    completeLabCount;
+
+  $("awaitingLabCount").textContent =
+    awaitingLabCount;
+
+  $("calibrationReadyCount").textContent =
+    pairedCount;
+
+  $("kwaraCount").textContent =
+    samples.filter(
+      sample => sample.state === "Kwara"
+    ).length;
+
+  $("nigerCount").textContent =
+    samples.filter(
+      sample => sample.state === "Niger"
+    ).length;
+}
+
+/* ================================================
+   SENSOR OUTPUT CHART
+
+   The bars are scaled for visual inspection only.
+   They do not imply that different sensor outputs
+   share the same unit or measurement scale.
+================================================ */
+
+function renderChart() {
+  const chart = $("chart");
+  chart.replaceChildren();
+
+  // Cloud records are already ordered newest first.
+  // Demo records are in their original display order.
+  const recent = samples.slice(0,5);
+
+  if (!recent.length) {
+    chart.textContent = "No samples available.";
+    return;
+  }
+
+  const allValues = recent.flatMap(sample => [
+    safeNumber(sample.nitrate),
+    safeNumber(sample.ammonium),
+    safeNumber(sample.phosphorus)
+  ]).filter(value => value !== null);
+
+  const maxValue = Math.max(1,...allValues);
+
+  recent.forEach(sample => {
+    const group = document.createElement("div");
+    group.className = "bar-group";
+
+    const stack = document.createElement("div");
+    stack.className = "bar-stack";
+
+    const values = [
+      safeNumber(sample.nitrate),
+      safeNumber(sample.ammonium),
+      safeNumber(sample.phosphorus)
+    ];
+
+    const labels = [
+      "Nitrate output",
+      "Ammonium output",
+      "Phosphorus output"
+    ];
+
+    const colors = [
+      "#d8b45a",
+      "#1b5a3c",
+      "#759d76"
+    ];
+
+    values.forEach((value,index) => {
+      const bar = document.createElement("div");
+      bar.className = "bar";
+
+      bar.title =
+        labels[index] + ": " + displayValue(value);
+
+      const height = value === null
+        ? 3
+        : Math.max(
+            3,
+            (Math.max(0,value) / maxValue) * 145
+          );
+
+      bar.style.height = height + "px";
+      bar.style.background = colors[index];
+
+      stack.appendChild(bar);
+    });
+
+    const label = document.createElement("div");
+    label.className = "bar-label";
+    label.textContent = sample.id;
+
+    group.appendChild(stack);
+    group.appendChild(label);
+    chart.appendChild(group);
+  });
+}
+
+/* ================================================
+   CSV EXPORT
+================================================ */
+
+function exportCSV() {
+  if (!samples.length) {
+    alert("There are no samples to export.");
+    return;
+  }
+
+  const columns = [
+    "sample_id",
+    "farm_name",
+    "state",
+    "collection_date",
+    "nitrate_sensor",
+    "ammonium_sensor",
+    "phosphorus_sensor",
+    "soil_moisture_percent",
+    "soil_temperature_c",
+    "soil_ph",
+    "lab_nitrate_mg_kg",
+    "lab_ammonium_mg_kg",
+    "lab_phosphorus_mg_kg",
+    "record_type",
+    "lab_fields_complete",
+    "has_paired_result"
+  ];
+
+  const escapeCSV = value => {
+    const text =
+      value === null || value === undefined
+        ? ""
+        : String(value);
+
+    return '"' + text.replace(/"/g,'""') + '"';
+  };
+
+  const rows = [
+    columns.join(","),
+
+    ...samples.map(sample => {
+      const values = [
+        sample.id,
+        sample.farm,
+        sample.state,
+        sample.date,
+        sample.nitrate,
+        sample.ammonium,
+        sample.phosphorus,
+        sample.moisture,
+        sample.temperature,
+        sample.pH,
+        sample.labNitrate,
+        sample.labAmmonium,
+        sample.labPhosphorus,
+        sample.type,
+        hasCompleteLabRecord(sample),
+        hasPairedResult(sample)
+      ];
+
+      return values.map(escapeCSV).join(",");
+    })
+  ];
+
+  const blob = new Blob(
+    ["\uFEFF" + rows.join("\r\n")],
+    {type:"text/csv;charset=utf-8;"}
+  );
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+
+  link.download = isCloudMode
+    ? "agrosense_cloud_samples.csv"
+    : "agrosense_demo_samples.csv";
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(
+    () => URL.revokeObjectURL(url),
+    1000
+  );
+}
+
+/* ================================================
+   INITIALIZATION
+================================================ */
+
+$("loginForm").addEventListener("submit",signIn);
+$("logoutButton").addEventListener("click",signOut);
+$("sampleForm").addEventListener("submit",registerSample);
+$("searchInput").addEventListener("input",renderTable);
+$("exportButton").addEventListener("click",exportCSV);
+
+$("year").textContent = new Date().getFullYear();
+$("date").value = localDateString();
+
+async function initializeAgroSense() {
+  // Check the library before trying to create a client.
+  if (!window.supabase) {
+    showBanner(
+      "The Supabase library failed to load. Check your internet connection and reload the page.",
+      "error"
+    );
+
+    $("loginButton").disabled = true;
+    $("saveSampleButton").disabled = true;
+
+    return;
+  }
+
+  try {
+    supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+    const {data,error} =
+      await supabaseClient.auth.getSession();
+
+    if (error) throw error;
+
+    currentSession = data.session;
+
+    updateAuthUI();
+
+    if (currentSession) {
+      await loadCloudSamples();
+    } else {
+      isCloudMode = false;
+      samples = demoSamples.map(sample => ({...sample}));
+
+      renderTable();
+
+      showBanner(
+        "Website ready. Sign in to load and save cloud samples.",
+        "info"
+      );
+    }
+
+    // Register the listener only once.
+    if (!authListenerRegistered) {
+      authListenerRegistered = true;
+
+      supabaseClient.auth.onAuthStateChange(
+        (event,session) => {
+          currentSession = session;
+          updateAuthUI();
+
+          if (event === "SIGNED_OUT") {
+            isCloudMode = false;
+            samples = demoSamples.map(
+              sample => ({...sample})
+            );
+
+            renderTable();
+
+            showBanner(
+              "Signed out. Showing demonstration records.",
+              "info"
+            );
+
+          } else if (
+            session &&
+            [
+              "SIGNED_IN",
+              "TOKEN_REFRESHED",
+              "USER_UPDATED"
+            ].includes(event)
+          ) {
+            // Run database work after the auth callback.
+            setTimeout(() => {
+              if (currentSession) {
+                loadCloudSamples();
+              }
+            },0);
+          }
+        }
+      );
+    }
+
+  } catch (error) {
+    showBanner(
+      "Initialization failed: " + error.message,
+      "error"
+    );
+  }
+}
+
+initializeAgroSense();
+</script>
+
+</body>
+</html>

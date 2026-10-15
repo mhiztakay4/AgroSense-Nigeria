@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#123d2b">
+<title>Soil Nutrient Prediction | AgroSense Nigeria</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root {
+  --green:#123d2b;
+  --green2:#1b5e3b;
+  --gold:#d6ad45;
+  --bg:#f4f7f2;
+  --white:#fff;
+  --text:#20352a;
+  --muted:#718075;
+  --border:#dfe8df;
+  --red:#a33b31;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+header{
+  background:var(--green);
+  color:white;
+  padding:18px 5%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.brand{font-size:21px;font-weight:800}
+.brand span{color:var(--gold)}
+nav{display:flex;gap:15px;flex-wrap:wrap}
+nav a{color:white;text-decoration:none;font-size:13px}
+nav a:hover{color:var(--gold)}
+main{max-width:1120px;margin:auto;padding:26px 16px 50px}
+.hero{
+  background:linear-gradient(120deg,#123d2b,#28764b);
+  color:white;padding:28px;border-radius:18px;margin-bottom:22px;
+}
+.hero h1{margin:0 0 10px;font-size:clamp(25px,5vw,36px)}
+.hero p{line-height:1.7;max-width:760px;margin:0;color:#e4efe6}
+.badge{
+  display:inline-block;padding:7px 10px;border-radius:20px;
+  background:#ffffff1c;border:1px solid #ffffff40;
+  font-size:12px;margin-bottom:13px;
+}
+.warning{
+  background:#fff6df;border:1px solid #edd89a;color:#73571a;
+  border-radius:12px;padding:14px 16px;line-height:1.6;
+  font-size:13px;margin-bottom:22px;
+}
+.card{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:15px;padding:22px;margin-bottom:20px;
+  box-shadow:0 4px 16px #183c2510;
+}
+.card h2{font-size:19px;margin:0 0 8px}
+.sub{font-size:13px;color:var(--muted);line-height:1.6;margin:0 0 18px}
+.grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px
+}
+label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
+input,select,textarea{
+  width:100%;padding:12px;border:1px solid #d7e1d7;
+  border-radius:9px;font-size:14px;background:white;color:var(--text);
+}
+input:focus,select:focus,textarea:focus{
+  outline:2px solid #b5d7bd;border-color:var(--green2)
+}
+.field{min-width:0}
+.hint{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5}
+.buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+button,.btn{
+  border:0;border-radius:9px;padding:12px 17px;font-size:13px;
+  font-weight:700;cursor:pointer;text-decoration:none;display:inline-block
+}
+.primary{background:var(--green2);color:white}
+.secondary{background:#e9f0e9;color:var(--green)}
+button:disabled{opacity:.55;cursor:not-allowed}
+.status{
+  padding:13px;border-radius:9px;background:#edf5ed;
+  color:var(--green);font-size:13px;line-height:1.6;margin-top:15px;
+  display:none;overflow-wrap:anywhere
+}
+.status.error{background:#fff0ee;color:var(--red)}
+.auth-box{max-width:520px}
+.hidden{display:none!important}
+.metrics{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:18px
+}
+.metric{
+  padding:17px;background:#f7faf6;
+  border:1px solid var(--border);border-radius:12px;min-width:0
+}
+.metric .label{font-size:12px;color:var(--muted);margin-bottom:9px}
+.metric .value{
+  font-size:20px;font-weight:800;color:var(--green);overflow-wrap:anywhere
+}
+.metric small{
+  font-size:11px;color:var(--muted);
+  display:block;margin-top:7px;line-height:1.5
+}
+.api-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin-top:16px;
+}
+.api-item{
+  padding:15px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:#f8faf7;
+  min-width:0;
+}
+.api-item .api-label{
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:8px;
+}
+.api-item .api-value{
+  color:var(--green);
+  font-size:16px;
+  font-weight:800;
+  overflow-wrap:anywhere;
+}
+.api-item small{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+  margin-top:7px;
+}
+.api-indicator{
+  display:inline-block;
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#a6afa8;
+  margin-right:6px;
+}
+.api-indicator.online{background:#269653}
+.api-indicator.offline{background:#c33c32}
+.api-indicator.pending{background:#d6ad45}
+.table-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:12px}
+th,td{
+  padding:12px;text-align:left;border-bottom:1px solid var(--border);
+  white-space:nowrap
+}
+th{background:#f4f8f3;color:var(--green)}
+.empty{text-align:center;padding:25px;color:var(--muted);font-size:13px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+footer a{color:var(--green2);margin:0 6px}
+@media(max-width:760px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .metrics{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  header{padding:16px}
+  nav{gap:10px}
+  nav a{font-size:12px}
+  main{padding:18px 12px 35px}
+  .hero{padding:22px}
+  .card{padding:17px}
+  .grid,.api-grid{grid-template-columns:1fr}
+  .buttons button,.buttons .btn{width:100%;text-align:center}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="brand">🌱 AgroSense <span>Nigeria</span></div>
+  <nav>
+    <a href="index.html">Main Dashboard</a>
+    <a href="lab-results.html">Laboratory Results</a>
+    <a href="calibration.html">Calibration</a>
+    <a href="prediction.html">Prediction</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="badge">RESEARCH & DEVELOPMENT MODULE</div>
+    <h1>Soil Nutrient Prediction</h1>
+    <p>
+      Prepare sensor measurements for future machine-learning predictions.
+      This module connects to the AgroSense prediction API and checks whether
+      suitable nutrient models are available for agricultural research.
+    </p>
+  </section>
+
+  <div class="warning">
+    <strong>Research status:</strong> The API is connected to this page, but
+    predictions require suitable trained models and independent validation.
+    API connectivity alone does not establish prediction accuracy.
+    Do not enter invented readings as real research data.
+  </div>
+
+  <!-- RESEARCHER LOGIN -->
+  <section class="card auth-box" id="authCard">
+    <h2>🔐 Researcher Login</h2>
+    <p class="sub">
+      Sign in with the same researcher account used on the other AgroSense pages.
+    </p>
+
+    <form id="loginForm">
+      <div class="field" style="margin-bottom:13px">
+        <label for="email">Email address</label>
+        <input id="email" type="email" autocomplete="username" required>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" required>
+      </div>
+
+      <div class="buttons">
+        <button class="primary" id="loginBtn" type="submit">Sign In</button>
+      </div>
+    </form>
+
+    <div class="status" id="authMessage" role="status" aria-live="polite"></div>
+  </section>
+
+  <section id="appArea" class="hidden">
+
+    <!-- SESSION -->
+    <section class="card">
+      <h2>Researcher Session</h2>
+      <p class="sub" id="signedInText">You are signed in.</p>
+      <button class="secondary" id="logoutBtn" type="button">Sign Out</button>
+    </section>
+
+    <!-- LIVE API STATUS -->
+    <section class="card">
+      <h2>🌐 Machine-Learning API Connection</h2>
+      <p class="sub">
+        Live status from the AgroSense API deployed on Render.
+        This checks connectivity and model-file availability; it does not
+        measure scientific accuracy.
+      </p>
+
+      <div class="api-grid">
+        <div class="api-item">
+          <div class="api-label">API connection</div>
+          <div class="api-value">
+            <span class="api-indicator pending" id="apiIndicator"></span>
+            <span id="apiConnection">Checking…</span>
+          </div>
+          <small id="apiConnectionDetail">Contacting the deployed API.</small>
+        </div>
+
+        <div class="api-item">
+          <div class="api-label">Nitrate model</div>
+          <div class="api-value" id="nitrateModelStatus">Checking…</div>
+          <small>Availability of the trained nitrate model file.</small>
+        </div>
+
+        <div class="api-item">
+          <div class="api-label">Ammonium model</div>
+          <div class="api-value" id="ammoniumModelStatus">Checking…</div>
+          <small>Availability of the trained ammonium model file.</small>
+        </div>
+
+        <div class="api-item">
+          <div class="api-label">Phosphorus model</div>
+          <div class="api-value" id="phosphorusModelStatus">Checking…</div>
+          <small>Availability of the trained phosphorus model file.</small>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button type="button" class="primary" id="refreshApiBtn">
+          🔄 Refresh API Status
+        </button>
+      </div>
+
+      <div class="status" id="apiMessage" role="status" aria-live="polite"></div>
+
+      <div class="warning" style="margin-top:18px;margin-bottom:0">
+        <strong>Prediction safety:</strong>
+        This page does not generate nutrient predictions. Even if model files
+        become available, their suitability and independent validation must
+        be checked before using predictions for agricultural decisions.
+      </div>
+    </section>
+
+    <!-- SENSOR INPUT -->
+    <section class="card">
+      <h2>Sensor Measurement Input</h2>
+      <p class="sub">
+        Enter readings from an actual sample. Register the sample first on the
+        main dashboard. These inputs are saved only when you choose to update
+        the selected sample.
+      </p>
+
+      <form id="measurementForm">
+        <div class="grid">
+          <div class="field">
+            <label for="sampleSelect">Registered sample</label>
+            <select id="sampleSelect" required>
+              <option value="">Loading samples…</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="nitrate">Nitrate sensor reading</label>
+            <input id="nitrate" type="number" step="any" placeholder="Enter measured value">
+            <div class="hint">
+              Record the sensor output and its units in your research notes.
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="ammonium">Ammonium sensor reading</label>
+            <input id="ammonium" type="number" step="any" placeholder="Enter measured value">
+          </div>
+
+          <div class="field">
+            <label for="phosphorus">Phosphorus sensor reading</label>
+            <input id="phosphorus" type="number" step="any" placeholder="Enter measured value">
+          </div>
+
+          <div class="field">
+            <label for="moisture">Soil moisture (%)</label>
+            <input id="moisture" type="number" min="0" max="100" step="any" placeholder="e.g. 24.5">
+          </div>
+
+          <div class="field">
+            <label for="temperature">Soil temperature (°C)</label>
+            <input id="temperature" type="number" step="any" placeholder="e.g. 27.0">
+          </div>
+
+          <div class="field">
+            <label for="ph">Soil pH</label>
+            <input id="ph" type="number" min="0" max="14" step="any" placeholder="e.g. 6.5">
+          </div>
+        </div>
+
+        <div class="buttons">
+          <button type="submit" class="primary" id="saveBtn">
+            Save Sensor Readings
+          </button>
+          <button type="button" class="secondary" id="clearBtn">
+            Clear Form
+          </button>
+        </div>
+      </form>
+
+      <div id="measurementMessage" class="status" role="status" aria-live="polite"></div>
+    </section>
+
+    <!-- MODEL SUMMARY -->
+    <section class="card">
+      <h2>Prediction Readiness</h2>
+      <p class="sub">
+        This section summarizes model availability and the number of database
+        samples with all three sensor fields and all three laboratory fields
+        populated. A populated record is not automatically a valid training sample.
+      </p>
+
+      <div class="metrics">
+        <div class="metric">
+          <div class="label">Model availability</div>
+          <div class="value" id="modelAvailabilitySummary">Checking…</div>
+          <small id="modelAvailabilityDetail">
+            Waiting for the API model-status response.
+          </small>
+        </div>
+
+        <div class="metric">
+          <div class="label">Complete sensor/lab records</div>
+          <div class="value" id="pairedCount">Checking…</div>
+          <small>
+            Records containing all three sensor readings and all three
+            laboratory nutrient values. This is not a model-readiness score.
+          </small>
+        </div>
+
+        <div class="metric">
+          <div class="label">Prediction status</div>
+          <div class="value" id="predictionStatusSummary">Unavailable</div>
+          <small id="predictionStatusDetail">
+            Predictions remain disabled until suitable models and validation are established.
+          </small>
+        </div>
+      </div>
+
+      <div class="warning" style="margin-top:18px;margin-bottom:0">
+        <strong>Next research step:</strong> collect genuine sensor readings and
+        corresponding laboratory results using documented methods and compatible
+        units. Keep independent samples for testing. Do not use fictional demo
+        records as training or validation data.
+      </div>
+    </section>
+
+    <!-- SAMPLE HISTORY -->
+    <section class="card">
+      <h2>Registered Sample History</h2>
+      <p class="sub">
+        Cloud records from your AgroSense database. Sensor values may be blank
+        if not yet recorded.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Sample ID</th>
+              <th>Farm</th>
+              <th>State</th>
+              <th>Nitrate</th>
+              <th>Ammonium</th>
+              <th>Phosphorus</th>
+              <th>Moisture (%)</th>
+              <th>Temperature (°C)</th>
+              <th>pH</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody">
+            <tr>
+              <td colspan="9" class="empty">Loading registered samples…</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="historyMessage" class="status" role="status" aria-live="polite"></div>
+    </section>
+
+  </section>
+</main>
+
+<footer>
+  <p>AgroSense Nigeria · Soil Nutrient Research Platform</p>
+  <p>
+    <a href="index.html">Main Dashboard</a>
+    <a href="lab-results.html">Laboratory Results</a>
+    <a href="calibration.html">Calibration</a>
+  </p>
+  <p>Research prototype — not a substitute for laboratory analysis.</p>
+</footer>
+
+<script>
+(() => {
+  "use strict";
+
+  // Supabase configuration
+  const SUPABASE_URL = "https://oyooxynailoudqtwtlnl.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_4oUifA2Qqiuf7JEAJZv58A_qzJrWuzW";
+
+  // Deployed AgroSense API
+  const API_BASE_URL = "https://agrosense-ml-api.onrender.com";
+
+  const $ = id => document.getElementById(id);
+
+  let supabaseClient = null;
+  let samples = [];
+  let busy = false;
+  let apiCheckBusy = false;
+
+  const modelState = {
+    apiOnline: false,
+    nitrate: false,
+    ammonium: false,
+    phosphorus: false,
+    statusReceived: false
+  };
+
+  function showMessage(id, message, isError = false) {
+    const box = $(id);
+    box.textContent = message;
+    box.classList.toggle("error", isError);
+    box.style.display = "block";
+  }
+
+  function hideMessage(id) {
+    const box = $(id);
+    box.style.display = "none";
+    box.textContent = "";
+    box.classList.remove("error");
+  }
+
+  function displayValue(value, digits = 3) {
+    if (value === null || value === undefined || value === "") {
+      return "—";
+    }
+
+    const number = Number(value);
+
+    return Number.isFinite(number)
+      ? String(Number(number.toFixed(digits)))
+      : "—";
+  }
+
+  function numericInput(id) {
+    const value = $(id).value.trim();
+
+    if (value === "") return null;
+
+    const number = Number(value);
+
+    return Number.isFinite(number) ? number : null;
+  }
+
+  function setSignedIn(user) {
+    $("authCard").classList.toggle("hidden", !!user);
+    $("appArea").classList.toggle("hidden", !user);
+
+    $("signedInText").textContent = user
+      ? "Signed in as " + user.email
+      : "You are signed out.";
+  }
+
+  // Fetch JSON with a timeout. Render may take time to wake from inactivity.
+  async function fetchJsonWithTimeout(url, timeoutMs = 35000) {
+    const controller = new AbortController();
+
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Accept": "application/json"
+        },
+        signal: controller.signal,
+        cache: "no-store"
+      });
+
+      const rawText = await response.text();
+
+      let data = {};
+
+      try {
+        data = rawText ? JSON.parse(rawText) : {};
+      } catch (_) {
+        throw new Error(
+          "The API returned a response that was not valid JSON."
+        );
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          data.detail ||
+          data.message ||
+          "The API returned HTTP " + response.status + "."
+        );
+      }
+
+      return data;
+    } catch (error) {
+      if (error.name === "AbortError") {
+        throw new Error(
+          "The API took too long to respond. Render may still be waking up. Try refreshing."
+        );
+      }
+
+      if (error instanceof TypeError) {
+        throw new Error(
+          "Could not reach the API. Check your internet connection and confirm the Render service is running."
+        );
+      }
+
+      throw error;
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  function setIndicator(state) {
+    const indicator = $("apiIndicator");
+
+    indicator.classList.remove("online", "offline", "pending");
+
+    indicator.classList.add(state);
+  }
+
+  function setModelDisplay(id, available) {
+    const element = $(id);
+
+    element.textContent = available
+      ? "File available"
+      : "Not available";
+
+    element.style.color = available ? "#1b5e3b" : "#a33b31";
+  }
+
+  function updateReadinessSummary() {
+    const allModelsAvailable =
+      modelState.apiOnline &&
+      modelState.statusReceived &&
+      modelState.nitrate &&
+      modelState.ammonium &&
+      modelState.phosphorus;
+
+    if (!modelState.apiOnline) {
+      $("modelAvailabilitySummary").textContent = "API offline";
+      $("modelAvailabilityDetail").textContent =
+        "The page cannot currently confirm model availability.";
+
+      $("predictionStatusSummary").textContent = "Unavailable";
+      $("predictionStatusDetail").textContent =
+        "The API is unreachable or its status could not be confirmed.";
+
+      return;
+    }
+
+    if (!modelState.statusReceived) {
+      $("modelAvailabilitySummary").textContent = "Unknown";
+      $("modelAvailabilityDetail").textContent =
+        "The API is online, but the model-status response could not be confirmed.";
+
+      $("predictionStatusSummary").textContent = "Unavailable";
+      $("predictionStatusDetail").textContent =
+        "Check the API response before attempting further integration.";
+
+      return;
+    }
+
+    if (allModelsAvailable) {
+      $("modelAvailabilitySummary").textContent = "Files available";
+      $("modelAvailabilityDetail").textContent =
+        "All three model files are reported available. Their scientific suitability has not been established by this check.";
+
+      $("predictionStatusSummary").textContent = "Validation required";
+      $("predictionStatusDetail").textContent =
+        "Predictions remain disabled until model loading, input compatibility, and independent validation are confirmed.";
+    } else {
+      $("modelAvailabilitySummary").textContent = "Not ready";
+      $("modelAvailabilityDetail").textContent =
+        "One or more trained model files are missing.";
+
+      $("predictionStatusSummary").textContent = "Unavailable";
+      $("predictionStatusDetail").textContent =
+        "No nutrient predictions are generated while required models are missing or not validated.";
+    }
+  }
+
+  async function refreshApiStatus() {
+    if (apiCheckBusy) return;
+
+    apiCheckBusy = true;
+
+    const button = $("refreshApiBtn");
+
+    button.disabled = true;
+    button.textContent = "Checking API…";
+
+    setIndicator("pending");
+
+    $("apiConnection").textContent = "Checking…";
+    $("apiConnectionDetail").textContent =
+      "Contacting the deployed Render service.";
+
+    $("nitrateModelStatus").textContent = "Checking…";
+    $("ammoniumModelStatus").textContent = "Checking…";
+    $("phosphorusModelStatus").textContent = "Checking…";
+
+    hideMessage("apiMessage");
+
+    modelState.apiOnline = false;
+    modelState.statusReceived = false;
+    modelState.nitrate = false;
+    modelState.ammonium = false;
+    modelState.phosphorus = false;
+
+    updateReadinessSummary();
+
+    try {
+      // First check whether the API itself is reachable.
+      await fetchJsonWithTimeout(
+        API_BASE_URL + "/health"
+      );
+
+      modelState.apiOnline = true;
+
+      setIndicator("online");
+
+      $("apiConnection").textContent = "Online";
+      $("apiConnectionDetail").textContent =
+        "The AgroSense API responded successfully.";
+
+      // Then check whether the three trained model files are available.
+      try {
+        const status = await fetchJsonWithTimeout(
+          API_BASE_URL + "/model-status"
+        );
+
+        // Accept the documented model-status response shape.
+        const models = status.models || {};
+
+        modelState.nitrate = models.nitrate === true;
+        modelState.ammonium = models.ammonium === true;
+        modelState.phosphorus = models.phosphorus === true;
+
+        modelState.statusReceived = true;
+
+        setModelDisplay(
+          "nitrateModelStatus",
+          modelState.nitrate
+        );
+
+        setModelDisplay(
+          "ammoniumModelStatus",
+          modelState.ammonium
+        );
+
+        setModelDisplay(
+          "phosphorusModelStatus",
+          modelState.phosphorus
+        );
+
+        if (
+          modelState.nitrate &&
+          modelState.ammonium &&
+          modelState.phosphorus
+        ) {
+          showMessage(
+            "apiMessage",
+            "The API is online and reports all three model files available. This does not establish model accuracy or validation."
+          );
+        } else {
+          showMessage(
+            "apiMessage",
+            status.message ||
+            "The API is online, but one or more model files are missing. Predictions remain unavailable.",
+            true
+          );
+        }
+      } catch (error) {
+        $("nitrateModelStatus").textContent = "Unknown";
+        $("ammoniumModelStatus").textContent = "Unknown";
+        $("phosphorusModelStatus").textContent = "Unknown";
+
+        showMessage(
+          "apiMessage",
+          "The API is online, but its model-status endpoint could not be read: " +
+          error.message,
+          true
+        );
+      }
+    } catch (error) {
+      modelState.apiOnline = false;
+
+      setIndicator("offline");
+
+      $("apiConnection").textContent = "Offline";
+      $("apiConnectionDetail").textContent =
+        "The API could not be reached.";
+
+      $("nitrateModelStatus").textContent = "Unknown";
+      $("ammoniumModelStatus").textContent = "Unknown";
+      $("phosphorusModelStatus").textContent = "Unknown";
+
+      showMessage(
+        "apiMessage",
+        error.message,
+        true
+      );
+    } finally {
+      updateReadinessSummary();
+
+      button.disabled = false;
+      button.textContent = "🔄 Refresh API Status";
+
+      apiCheckBusy = false;
+    }
+  }
+
+  $("refreshApiBtn").addEventListener(
+    "click",
+    refreshApiStatus
+  );
+
+  async function loadSamples() {
+    const { data, error } = await supabaseClient
+      .from("soil_samples")
+      .select([
+        "id", "sample_id", "farm_name", "state", "collection_date",
+        "nitrate_sensor", "ammonium_sensor", "phosphorus_sensor",
+        "soil_moisture_percent", "soil_temperature_c", "soil_ph",
+        "lab_nitrate_mg_kg", "lab_ammonium_mg_kg", "lab_phosphorus_mg_kg",
+        "lab_validated", "notes"
+      ].join(","))
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    samples = data || [];
+
+    renderSampleOptions();
+    renderHistory();
+
+    const paired = samples.filter(s =>
+      s.nitrate_sensor !== null &&
+      s.nitrate_sensor !== undefined &&
+      s.ammonium_sensor !== null &&
+      s.ammonium_sensor !== undefined &&
+      s.phosphorus_sensor !== null &&
+      s.phosphorus_sensor !== undefined &&
+      s.lab_nitrate_mg_kg !== null &&
+      s.lab_nitrate_mg_kg !== undefined &&
+      s.lab_ammonium_mg_kg !== null &&
+      s.lab_ammonium_mg_kg !== undefined &&
+      s.lab_phosphorus_mg_kg !== null &&
+      s.lab_phosphorus_mg_kg !== undefined
+    );
+
+    $("pairedCount").textContent = String(paired.length);
+  }
+
+  function renderSampleOptions() {
+    const select = $("sampleSelect");
+
+    const previousValue = select.value;
+
+    select.replaceChildren();
+
+    const placeholder = document.createElement("option");
+
+    placeholder.value = "";
+    placeholder.textContent = samples.length
+      ? "Choose a registered sample"
+      : "No registered samples found";
+
+    select.appendChild(placeholder);
+
+    samples.forEach(sample => {
+      const option = document.createElement("option");
+
+      option.value = String(sample.id);
+      option.textContent =
+        sample.sample_id + " — " + sample.farm_name;
+
+      select.appendChild(option);
+    });
+
+    if (
+      previousValue &&
+      samples.some(s => String(s.id) === previousValue)
+    ) {
+      select.value = previousValue;
+    }
+  }
+
+  function renderHistory() {
+    const body = $("historyBody");
+
+    body.replaceChildren();
+
+    if (!samples.length) {
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
+
+      td.colSpan = 9;
+      td.className = "empty";
+      td.textContent =
+        "No registered samples found. Register a sample on the main dashboard first.";
+
+      tr.appendChild(td);
+      body.appendChild(tr);
+
+      return;
+    }
+
+    samples.forEach(sample => {
+      const tr = document.createElement("tr");
+
+      const values = [
+        sample.sample_id,
+        sample.farm_name,
+        sample.state,
+        displayValue(sample.nitrate_sensor),
+        displayValue(sample.ammonium_sensor),
+        displayValue(sample.phosphorus_sensor),
+        displayValue(sample.soil_moisture_percent),
+        displayValue(sample.soil_temperature_c),
+        displayValue(sample.soil_ph)
+      ];
+
+      values.forEach(value => {
+        const td = document.createElement("td");
+
+        td.textContent = value;
+        tr.appendChild(td);
+      });
+
+      body.appendChild(tr);
+    });
+  }
+
+  function populateForm() {
+    hideMessage("measurementMessage");
+
+    const id = $("sampleSelect").value;
+
+    const sample = samples.find(
+      s => String(s.id) === id
+    );
+
+    if (!sample) return;
+
+    $("nitrate").value = sample.nitrate_sensor ?? "";
+    $("ammonium").value = sample.ammonium_sensor ?? "";
+    $("phosphorus").value = sample.phosphorus_sensor ?? "";
+    $("moisture").value = sample.soil_moisture_percent ?? "";
+    $("temperature").value = sample.soil_temperature_c ?? "";
+    $("ph").value = sample.soil_ph ?? "";
+  }
+
+  $("sampleSelect").addEventListener(
+    "change",
+    populateForm
+  );
+
+  $("clearBtn").addEventListener("click", () => {
+    $("measurementForm").reset();
+    hideMessage("measurementMessage");
+  });
+
+  $("loginForm").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    hideMessage("authMessage");
+
+    $("loginBtn").disabled = true;
+    $("loginBtn").textContent = "Signing in…";
+
+    try {
+      const { error } =
+        await supabaseClient.auth.signInWithPassword({
+          email: $("email").value.trim(),
+          password: $("password").value
+        });
+
+      if (error) throw error;
+    } catch (error) {
+      showMessage(
+        "authMessage",
+        error.message || "Sign-in failed.",
+        true
+      );
+    } finally {
+      $("loginBtn").disabled = false;
+      $("loginBtn").textContent = "Sign In";
+    }
+  });
+
+  $("logoutBtn").addEventListener("click", async () => {
+    const { error } = await supabaseClient.auth.signOut();
+
+    if (error) {
+      showMessage("historyMessage", error.message, true);
+    }
+  });
+
+  $("measurementForm").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    if (busy) return;
+
+    const selectedId = $("sampleSelect").value;
+
+    if (!selectedId) {
+      showMessage(
+        "measurementMessage",
+        "Choose a registered sample first.",
+        true
+      );
+      return;
+    }
+
+    const moisture = numericInput("moisture");
+    const temperature = numericInput("temperature");
+    const soilPh = numericInput("ph");
+
+    if (
+      $("moisture").value.trim() !== "" &&
+      (moisture === null || moisture < 0 || moisture > 100)
+    ) {
+      showMessage(
+        "measurementMessage",
+        "Soil moisture must be between 0 and 100%.",
+        true
+      );
+      return;
+    }
+
+    if (
+      $("ph").value.trim() !== "" &&
+      (soilPh === null || soilPh < 0 || soilPh > 14)
+    ) {
+      showMessage(
+        "measurementMessage",
+        "Soil pH must be between 0 and 14.",
+        true
+      );
+      return;
+    }
+
+    const nitrate = numericInput("nitrate");
+    const ammonium = numericInput("ammonium");
+    const phosphorus = numericInput("phosphorus");
+
+    const payload = {
+      nitrate_sensor: nitrate,
+      ammonium_sensor: ammonium,
+      phosphorus_sensor: phosphorus,
+      soil_moisture_percent: moisture,
+      soil_temperature_c: temperature,
+      soil_ph: soilPh
+    };
+
+    busy = true;
+
+    $("saveBtn").disabled = true;
+    $("saveBtn").textContent = "Saving…";
+
+    try {
+      const { error } = await supabaseClient
+        .from("soil_samples")
+        .update(payload)
+        .eq("id", Number(selectedId));
+
+      if (error) throw error;
+
+      showMessage(
+        "measurementMessage",
+        "Sensor readings saved to the selected sample. The API has not generated a nutrient prediction."
+      );
+
+      await loadSamples();
+
+      $("sampleSelect").value = selectedId;
+      populateForm();
+    } catch (error) {
+      showMessage(
+        "measurementMessage",
+        error.message || "Could not save sensor readings.",
+        true
+      );
+    } finally {
+      busy = false;
+
+      $("saveBtn").disabled = false;
+      $("saveBtn").textContent = "Save Sensor Readings";
+    }
+  });
+
+  async function initialise() {
+    // Check API status independently of researcher login.
+    // This status check does not read or modify soil records.
+    refreshApiStatus();
+
+    if (
+      !window.supabase ||
+      typeof window.supabase.createClient !== "function"
+    ) {
+      showMessage(
+        "authMessage",
+        "The Supabase library could not be loaded. Check your internet connection and reload the page.",
+        true
+      );
+      return;
+    }
+
+    supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+    const {
+      data: { session },
+      error
+    } = await supabaseClient.auth.getSession();
+
+    if (error) {
+      showMessage("authMessage", error.message, true);
+      return;
+    }
+
+    setSignedIn(session?.user || null);
+
+    if (session?.user) {
+      try {
+        await loadSamples();
+      } catch (loadError) {
+        showMessage(
+          "historyMessage",
+          loadError.message || "Could not load sample records.",
+          true
+        );
+      }
+    }
+
+    supabaseClient.auth.onAuthStateChange(
+      (_event, newSession) => {
+        setSignedIn(newSession?.user || null);
+
+        if (newSession?.user) {
+          setTimeout(async () => {
+            try {
+              await loadSamples();
+            } catch (loadError) {
+              showMessage(
+                "historyMessage",
+                loadError.message || "Could not load sample records.",
+                true
+              );
+            }
+          }, 0);
+        } else {
+          samples = [];
+
+          $("historyBody").innerHTML =
+            '<tr><td colspan="9" class="empty">Sign in to view sample records.</td></tr>';
+
+          $("sampleSelect").innerHTML =
+            '<option value="">Sign in to load samples</option>';
+
+          $("pairedCount").textContent = "—";
+        }
+      }
+    );
+  }
+
+  initialise().catch(error => {
+    showMessage(
+      "authMessage",
+      error.message || "Could not initialise AgroSense.",
+      true
+    );
+  });
+})();
+</script>
+</body>
+</html>
